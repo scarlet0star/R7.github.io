@@ -1,0 +1,47 @@
+<!-- 사용자 정보 수정 입력 필드(비밀번호, 이메일 등)
+
+"수정하기" 버튼
+
+JavaScript(fetch)를 사용한 데이터 전송
+
+변경된 사용자 정보 출력 -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>회원정보 수정</title>
+    <script>
+        async function update(){
+            const password = document.getElementById('password').value;
+            const email = document.getElementById('email').value;
+            const name = document.getElementById('name').value;
+            const data = {password, email, name};
+            const res = await fetch('/update', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data),
+            });
+            const result = await res.json();
+            if(result.success){
+                alert(result.msg);
+                location.href = '/list';
+            }else{
+                alert(result.msg);
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>회원정보 수정</h1>
+    <div>
+        <input type="password" id="password" placeholder="비밀번호">
+        <input type="email" id="email" placeholder="이메일">
+        <input type="text" id="name" placeholder="이름">
+        <button onclick="update()">수정하기</button>
+    </div>
+</body>
+</html>

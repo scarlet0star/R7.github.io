@@ -1,0 +1,49 @@
+<!-- 회원가입 입력 필드(아이디, 이메일, 비밀번호 등)
+
+"회원가입" 버튼
+
+JavaScript(fetch)를 사용한 데이터 전송
+
+회원가입 완료 메시지 출력 -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>회원가입</title>
+    <script>
+        async function signup(){
+            const id = document.getElementById('id').value;
+            const password = document.getElementById('password').value;
+            const email = document.getElementById('email').value;
+            const name = document.getElementById('name').value;
+            const data = {id, password, email, name};
+            const res = await fetch('/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data),
+            });
+            const result = await res.json();
+            if(result.success){
+                alert(result.msg);
+                location.href = '/login';
+            }else{
+                alert(result.msg);
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>회원가입</h1>
+    <div>
+        <input type="text" id="id" placeholder="아이디">
+        <input type="password" id="password" placeholder="비밀번호">
+        <input type="email" id="email" placeholder="이메일">
+        <input type="text" id="name" placeholder="이름">
+        <button onclick="signup()">회원가입</button>
+    </div>
+</body>
+</html>
