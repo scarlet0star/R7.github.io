@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<button onclick="getProductCount()">일별 Product</button>
+<button onclick="getCategoryProductCount()">카테고리별 Product</button>
+<button onclick="getTransactionStatusCount()">거래 진행 상황</button>
+
+<canvas id="myChart" style="max-width: 800px; max-height: 600px;"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ctx = document.getElementById('myChart').getContext('2d');
+let myChart;
+
+function getProductCount() {
+    fetch('http://127.0.0.1:8000/office/counts')
+        .then(response => response.json())
+        .then(json => {
+            if (myChart) {
+                myChart.destroy();  // 이전 차트를 지웁니다.
+            }
+            myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: json.dates,
+                    datasets: [{
+                        label: 'Product Count',
+                        data: json.counts,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+}
+
+function getCategoryProductCount() {
+    fetch('http://127.0.0.1:8000/office/category')
+        .then(response => response.json())
+        .then(json => {
+            if (myChart) {
+                myChart.destroy();
+            }
+            myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(json),
+                    datasets: [{
+                        label: 'Category Product Count',
+                        data: Object.values(json),
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+}
+
+function getTransactionStatusCount() {
+    fetch('http://127.0.0.1:8000/office/transaction')
+        .then(response => response.json())
+        .then(json => {
+            if (myChart) {
+                myChart.destroy();
+            }
+            myChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(json),
+                    datasets: [{
+                        label: 'Transaction Status Count',
+                        data: Object.values(json),
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                }
+            });
+        });
+}
+</script>
+
+</body>
+</html>
