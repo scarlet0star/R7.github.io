@@ -1,25 +1,25 @@
-<!-- 회원가입 입력 필드(아이디, 이메일, 비밀번호 등)
-
-"회원가입" 버튼
-
-JavaScript(fetch)를 사용한 데이터 전송
-
-회원가입 완료 메시지 출력 -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=, initial-scale=1.0">
     <title>회원가입</title>
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script>
         async function signup(){
-            const id = document.getElementById('id').value;
             const password = document.getElementById('password').value;
+            const passwordConfirmation = document.getElementById('passwordConfirmation').value;
             const email = document.getElementById('email').value;
             const name = document.getElementById('name').value;
-            const data = {id, password, email, name};
-            const res = await fetch('/signup', {
+            
+            if(password !== passwordConfirmation) {
+                alert("비밀번호가 일치하지 않습니다.");
+                return;
+            }
+
+            const data = {email, password, name};
+            const res = await fetch('http://3.36.40.49/user/signup/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -28,22 +28,40 @@ JavaScript(fetch)를 사용한 데이터 전송
             });
             const result = await res.json();
             if(result.success){
-                alert(result.msg);
-                location.href = '/login';
+                alert(result.message);
+                location.href = 'user_login.html';
             }else{
-                alert(result.msg);
+                alert(result.message);
             }
         }
     </script>
 </head>
 <body>
-    <h1>회원가입</h1>
-    <div>
-        <input type="text" id="id" placeholder="아이디">
-        <input type="password" id="password" placeholder="비밀번호">
-        <input type="email" id="email" placeholder="이메일">
-        <input type="text" id="name" placeholder="이름">
-        <button onclick="signup()">회원가입</button>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <h1 class="text-center">회원가입</h1>
+                <div class="form-group">
+                    <label for="email">이메일</label>
+                    <input type="email" class="form-control" id="email" placeholder="이메일">
+                </div>
+                <div class="form-group">
+                    <label for="password">비밀번호</label>
+                    <input type="password" class="form-control" id="password" placeholder="비밀번호">
+                </div>
+                <div class="form-group">
+                    <label for="passwordConfirmation">비밀번호 확인</label>
+                    <input type="password" class="form-control" id="passwordConfirmation" placeholder="비밀번호 확인">
+                </div>
+                <div class="form-group">
+                    <label for="name">이름</label>
+                    <input type="text" class="form-control" id="name" placeholder="이름">
+                </div>
+                <div class="text-center">
+                    <button class="btn btn-primary" onclick="signup()">회원가입</button>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>
