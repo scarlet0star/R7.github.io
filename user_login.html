@@ -1,18 +1,23 @@
+<!-- 로그인 입력 필드(아이디, 비밀번호)
+
+"로그인" 버튼
+
+JavaScript(fetch)를 사용한 데이터 전송
+
+주고 받은 토큰 저장 -->
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>로그인</title>
-    <!-- Add Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script>
-        async function login() {
-            const email = document.getElementById('id').value;
+        async function login(){
+            const id = document.getElementById('id').value;
             const password = document.getElementById('password').value;
-            const data = { email, password };
-            const res = await fetch('http://3.36.40.49/user/login/', {
+            const data = {id, password};
+            const res = await fetch('/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -20,41 +25,21 @@
                 body: JSON.stringify(data),
             });
             const result = await res.json();
-
-            localStorage.setItem("access", result.access);
-            localStorage.setItem("refresh", result.refresh);
-
-            const base64Url = result.access.split('.')[1];
-            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
-                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-            }).join(''));
-
-            localStorage.setItem("payload", jsonPayload);
-
-            // Redirect to index.html
-            window.location.href = 'index.html';
+            if(result.success){
+                localStorage.setItem('token', result.token);
+                location.href = '/';
+            }else{
+                alert(result.msg);
+            }
         }
     </script>
 </head>
-
 <body>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-6">
-                <h1 class="text-center">로그인</h1>
-                <div class="form-group">
-                    <label for="id">아이디</label>
-                    <input type="text" class="form-control" id="id" placeholder="아이디">
-                </div>
-                <div class="form-group">
-                    <label for="password">비밀번호</label>
-                    <input type="password" class="form-control" id="password" placeholder="비밀번호">
-                </div>
-                <button onclick="login()" class="btn btn-primary">로그인</button>
-            </div>
-        </div>
-    </div>
+    <h1>로그인</h1>
+    <div>
+        <input type="text" id="id" placeholder="아이디">
+        <input type="password" id="password" placeholder="비밀번호">
+        <button onclick="login()">로그인</button>
+    </div>    
 </body>
-
 </html>
