@@ -14,31 +14,33 @@ async function loadProducts() {
   response_json_array.forEach((product) => {
     const newProduct = document.createElement("div");
     newProduct.setAttribute("onclick", `productDetail(${product.id})`);
-    newProduct.style = "width: 200px; height: 300px;";
-    newProduct.style.border = "1px solid black";
-    newProduct.style.margin = "10px";
+    newProduct.className = "card"; // Bootstrap card class 적용
+    newProduct.style.width = "18rem"; // 카드 너비 조정
 
     const newImage = document.createElement("img");
-    newImage.style = "width: 200px; height: 200px; cursor: pointer;"; // 이미지 크기 지정
-    newImage.style.backgroundColor = "black";
-    newImage.style.objectFit = "cover";
+    newImage.className = "card-img-top"; // Bootstrap card-img-top class 적용
 
     if (product.images && product.images.length !== 0) {
       newImage.src = product.images[0].image; // 이미지 URL 지정
-      newProduct.appendChild(newImage);
     } else {
       newImage.src = `https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F99F519345EE1ED620D`; // 이미지 URL 지정
-      newProduct.appendChild(newImage);
     }
+    newProduct.appendChild(newImage);
 
-    const newTitle = document.createElement("h3");
+    const cardBody = document.createElement("div");
+    cardBody.className = "card-body"; // Bootstrap card-body class 적용
+
+    const newTitle = document.createElement("h5");
     newTitle.textContent = product.title;
-    newTitle.style = "cursor: pointer;"
-    newProduct.appendChild(newTitle);
+    newTitle.className = "card-title"; // Bootstrap card-title class 적용
+    cardBody.appendChild(newTitle);
 
     const newPrice = document.createElement("p");
     newPrice.textContent = numberWithCommas(product.price) + " 원";
-    newProduct.appendChild(newPrice);
+    newPrice.className = "card-text"; // Bootstrap card-text class 적용
+    cardBody.appendChild(newPrice);
+
+    newProduct.appendChild(cardBody);
 
     products.appendChild(newProduct);
   });
