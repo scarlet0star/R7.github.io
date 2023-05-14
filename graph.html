@@ -19,6 +19,14 @@ function getProductView(){
     fetch('https://lucedude.link/office/views')
         .then(response => response.json())
         .then(json => {
+
+            let chartData = {};
+            json.forEach(item => {
+                let key = `${item.id}_${item.title}`;
+                let value = item.views;
+                chartData[key] = value;
+            });
+
             if (myChart) {
                 myChart.destroy();
             }
@@ -26,10 +34,10 @@ function getProductView(){
             myChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: Object.keys(json),
+                    labels: Object.keys(chartData),
                     datasets: [{
                         label: '# of Views',
-                        data: json.views,
+                        data: Object.values(chartData),
                         backgroundColor: 'rgba(75, 192, 192, 0.2)',
                         borderColor: 'rgba(75, 192, 192, 1)',
                         borderWidth: 1
@@ -45,6 +53,7 @@ function getProductView(){
             });
         });
 }
+
 
 function getUserWriteCount() {
     fetch('https://lucedude.link/office/writingcounts')
