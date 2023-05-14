@@ -61,7 +61,7 @@ window.onload = async function () {
     productCategory.appendChild(aElement);
   }
 
-  productViews.innerText = response.views + "회";
+  productViews.innerText ="조회수"+ response.views + "회";
   if (response.transaction_status == 0) {
     productTransaction_status.innerText = "구매 가능";
   }
@@ -72,9 +72,10 @@ window.onload = async function () {
     productTransaction_status.innerText = "판매 완료";
   }
   //////////////////////////////////////////////////////////////////
-  productRefreshed_at.innerText = response.refreshed_at;
-  productCreated_at.innerText = response.created_at;
-  productBookmark.innerText = response.bookmark;
+  productRefreshed_at.innerText = "끌어올리기";
+  productRefreshed_at.setAttribute("onclick",`refreshProduct(${productId})`)
+  productCreated_at.innerText = "작성일  " + response.created_at;
+  productBookmark.innerText = "관심등록" + response.bookmark;
   productIs_hide.innerText = response.is_hide;
 
   const newImage = document.createElement("img");
@@ -124,6 +125,31 @@ window.onload = async function () {
   }
 };
 
+async function refreshProduct(product_id) {
+  const formData = new FormData();
+  formData.append("refreshed_at", "");
+
+  const access = localStorage.getItem('access')
+  const response = await fetch(`https://lucedude.link/product/${product_id}/`, {
+    headers: {
+      Authorization: `Bearer ${access}`,
+    },
+    method: "PUT",
+    body: formData,
+  });
+  const data = await response.json();
+  console.log(data);
+
+  if (response.status == 200) {
+    alert("끌어올리기 완료!");
+    window.location.href = `/product_detail.html?product_id=${product_id}`;
+  } else {
+    alert("잘못 된 요청입니다.");
+  }
+}
+
+
+
 function productUpdate(product_id) {
   window.location.href = `/product_update.html?product_id=${product_id}`;
 }
@@ -160,3 +186,5 @@ function categoryFilter(category_id) {
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
+
+

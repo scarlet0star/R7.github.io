@@ -54,7 +54,7 @@ async function handleProductUpdate(product_id) {
 
   if (response.status == 200) {
     alert("수정 완료!");
-    // window.location.href = `/product_detail.html?product_id=${product_id}`;
+    window.location.href = `/product_detail.html?product_id=${product_id}`;
   } else {
     alert("잘못 된 요청입니다.");
   }
