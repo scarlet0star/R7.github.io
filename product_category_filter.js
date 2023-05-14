@@ -12,6 +12,9 @@ async function loadCategoryProducts() {
   response_json_array = response_json.results;
 
   const products = document.getElementById("products");
+  const category_h1 = document.getElementById("category_h1");
+  const title = await getCategoryList()
+  category_h1.innerText = title[categoryId-1].name
 
   response_json_array.forEach((product) => {
     const newProduct = document.createElement("div");
