@@ -2,7 +2,7 @@
 <html>
 <body>
 
-
+<button onclick="getProductView()">Product 조회수순</button>
 <button onclick="getUserWriteCount()">유저별 생성 갯수</button>
 <button onclick="getProductCount()">일별 Product</button>
 <button onclick="getCategoryProductCount()">카테고리별 Product</button>
@@ -14,6 +14,37 @@
 <script>
 const ctx = document.getElementById('myChart').getContext('2d');
 let myChart;
+
+function getProductView(){
+    fetch('https://lucedude.link/office/views')
+        .then(response => response.json())
+        .then(json => {
+            if (myChart) {
+                myChart.destroy();
+            }
+
+            myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(json),
+                    datasets: [{
+                        label: '# of Views',
+                        data: json.views,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+}
 
 function getUserWriteCount() {
     fetch('https://lucedude.link/office/writingcounts')
