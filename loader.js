@@ -48,7 +48,7 @@ async function injectNavbar() {
 async function getCategoryList() {
     const response = await fetch('https://lucedude.link/product/category/');
     const data = await response.json();
-    console.log(data)
+
     return data;
 }
 
@@ -74,7 +74,7 @@ async function createCategoryList() {
 
 // 카테고리별 상품 보기
 function categoryProductFeed(category_id) {
-    window.location.href = `/product_categoryproduct.html?category_id=${category_id}`
+    window.location.href = `/product_category_filter.html?category_id=${category_id}`
 }
 
 // 로그아웃

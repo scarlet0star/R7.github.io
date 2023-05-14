@@ -54,7 +54,7 @@ async function handleProductUpdate(product_id) {
 
   if (response.status == 200) {
     alert("수정 완료!");
-    window.location.href = `/product_detail.html?product_id=${product_id}`;
+    // window.location.href = `/product_detail.html?product_id=${product_id}`;
   } else {
     alert("잘못 된 요청입니다.");
   }
@@ -62,28 +62,24 @@ async function handleProductUpdate(product_id) {
 
 window.onload = async function () {
   await createCategoryOptions();
-  console.log("로딩");
 
   // 유저 확인용
   const payload = localStorage.getItem("payload");
-  console.log(payload);
+
   const payload_parse = JSON.parse(payload);
-  console.log(payload_parse.user_id);
+
   userId = payload_parse.user_id;
   //
 
   const urlParams = new URLSearchParams(window.location.search);
   const productId = urlParams.get("product_id");
-  console.log(productId);
 
+  
   const response = await getProduct(productId);
-  console.log(response);
-
-  let token = localStorage.getItem("access");
+  
   const title = document.getElementById("title");
   const content = document.getElementById("content");
   const price = document.getElementById("price");
-  const image = document.getElementById("image");
   const is_free = document.getElementById("is_free");
   const bargain = document.getElementById("bargain");
   const place = document.getElementById("place");
@@ -91,7 +87,7 @@ window.onload = async function () {
   const categoriesIds = response.category.map((category) => category.id);
 
   const categoryIdToSelect = categoriesIds;
-  console.log(response.category);
+
   const categorySelect = document.getElementById("category");
   categoryIdToSelect.forEach((id) => {
     const option = categorySelect.querySelector(`option[value="${id}"]`);
@@ -103,17 +99,21 @@ window.onload = async function () {
   title.value = response.title;
   content.value = response.content;
   price.value = response.price;
-  image.files = response.images[0];
-  console.log(response)
-  console.log(response.images[0])
   is_free.checked = response.is_free;
   bargain.checked = response.bargain;
   place.value = response.place;
 
+  const imageInput = document.getElementById("image");
+  
+  const images = response.images; //이미지 리스트 - 리스트 안에 딕셔너리
 
-  // for (let i = 0; i < image.length; i++) {
-  //     formData.append('images', image[i]);
-  // }
+  for (let i = 0; i < images.length; i++) {
+    const image = images[i].image; // 이미지중 i번째의 url
+
+    imageInput.append(image);
+  }
+
+  console.log(imageInput)
 
   const productUpdateBtn = document.getElementById("product_update");
   productUpdateBtn.setAttribute("onclick", `handleProductUpdate(${productId})`);

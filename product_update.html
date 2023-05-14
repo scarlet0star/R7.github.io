@@ -32,6 +32,7 @@
             <input type="text" name="content" id="content" placeholder="content" /><br>
             <input type="number" name="price" id="price" placeholder="price" /><br>
             <input type="file" name="image" id="image" multiple /><br>
+            
             <div style="display: flex; justify-content: center; text-align: center;">
             <label style="margin: auto;"><input type="checkbox" name="is_free" id="is_free" value="True" />무료나눔</label>
             <label style="margin: auto;"><input type="checkbox" name="bargain" id="bargain" value="True" />가격제안 받기</label>
@@ -42,7 +43,7 @@
             </select><br>
             
         </form>
-        <button id="product_update" type="button" onclick="handleProductUpdate()">제출</button>
+        <button id="product_update" type="button" onclick="handleProductUpdate()">수정</button>
         <button type="button" onclick="window.location.href='/'">홈</button>
 
         <div id="products"></div>
