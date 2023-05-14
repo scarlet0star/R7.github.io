@@ -67,6 +67,7 @@ async function createCategoryList() {
         aElement.value = all_category[i].id;
         aElement.setAttribute("onclick",`categoryProductFeed(${aElement.value})`)
         aElement.textContent = all_category[i].name;
+        aElement.style = "cursor: pointer;"
         liElement.appendChild(aElement);
     }
 }
