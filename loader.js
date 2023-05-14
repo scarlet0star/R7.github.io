@@ -12,6 +12,36 @@ async function injectNavbar() {
     document.querySelector("header").innerHTML = data;
 
     createCategoryList()
+
+
+    const payload = localStorage.getItem("payload")
+    const payload_parse = JSON.parse(payload)
+    
+    const intro = document.getElementById("intro")
+    if (localStorage.getItem("access")) {
+        intro.innerText = payload_parse.email
+        
+        let navbarRight = document.getElementById("navbar-right")
+        let newLi = document.createElement("li")
+        newLi.setAttribute("class", "nav-item")
+        
+        let logoutBtn = document.createElement("button")
+        logoutBtn.setAttribute("class", "nav-link btn")
+        logoutBtn.innerText = '로그아웃'
+        logoutBtn.setAttribute("onclick", "logout()")
+    
+        newLi.appendChild(logoutBtn)
+    
+        navbarRight.appendChild(newLi)
+    
+        let loginButton = document.getElementById("login-button")
+        loginButton.style.display = 'none'
+
+        if (payload_parse.is_admin == true) {
+            const admin_category_create = document.getElementById("admin_category_create")
+            admin_category_create.style.display = "block"
+        }
+    }
 }
 
 // 카테고리 가져오기
@@ -57,35 +87,4 @@ function logout() {
     window.location.reload()
 }
 
-injectNavbar()
-
-window.onload = () => {
-    const payload = localStorage.getItem("payload")
-    const payload_parse = JSON.parse(payload)
-    
-    const intro = document.getElementById("intro")
-    if (localStorage.getItem("access")) {
-        intro.innerText = payload_parse.email
-        
-        let navbarRight = document.getElementById("navbar-right")
-        let newLi = document.createElement("li")
-        newLi.setAttribute("class", "nav-item")
-        
-        let logoutBtn = document.createElement("button")
-        logoutBtn.setAttribute("class", "nav-link btn")
-        logoutBtn.innerText = '로그아웃'
-        logoutBtn.setAttribute("onclick", "logout()")
-    
-        newLi.appendChild(logoutBtn)
-    
-        navbarRight.appendChild(newLi)
-    
-        let loginButton = document.getElementById("login-button")
-        loginButton.style.display = 'none'
-
-        if (payload_parse.is_admin == true) {
-            const admin_category_create = document.getElementById("admin_category_create")
-            admin_category_create.style.display = "block"
-        }
-    }
-}
+injectNavbar() 
