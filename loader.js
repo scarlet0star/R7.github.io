@@ -16,7 +16,7 @@ async function injectNavbar() {
 
     const payload = localStorage.getItem("payload")
     const payload_parse = JSON.parse(payload)
-    
+
     const intro = document.getElementById("intro")
     if (localStorage.getItem("access")) {
         intro.innerText = payload_parse.email
@@ -46,7 +46,7 @@ async function injectNavbar() {
 
 // 카테고리 가져오기
 async function getCategoryList() {
-    const response = await fetch('http://3.36.40.49/product/category/');
+    const response = await fetch('https://lucedude.link/product/category/');
     const data = await response.json();
     console.log(data)
     return data;

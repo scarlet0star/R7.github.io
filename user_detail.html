@@ -9,7 +9,7 @@
         async function detail() {
             const token = localStorage.getItem('access'); // Access the token from local storage
 
-            const res = await fetch('http://3.36.40.49/user/detail/', {
+            const res = await fetch('https://lucedude.link/user/detail/', {
                 headers: {
                     'Authorization': `Bearer ${token}`, // Send the token in Authorization header
                 },
@@ -28,7 +28,7 @@
             const token = localStorage.getItem('access'); // Access the token from local storage
             const name = document.getElementById('name').value;
 
-            const res = await fetch('http://3.36.40.49/user/update/', {
+            const res = await fetch('https://lucedude.link/user/update/', {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -48,7 +48,7 @@
         async function deleteAccount() {
             const token = localStorage.getItem('access'); // Access the token from local storage
 
-            const res = await fetch('http://3.36.40.49/user/delete/', {
+            const res = await fetch('https://lucedude.link/user/delete/', {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`, // Send the token in Authorization header

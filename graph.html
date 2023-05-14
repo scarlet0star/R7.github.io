@@ -16,7 +16,7 @@ const ctx = document.getElementById('myChart').getContext('2d');
 let myChart;
 
 function getUserWriteCount() {
-    fetch('http://3.36.40.49/office/writingcounts')
+    fetch('https://lucedude.link/office/writingcounts')
         .then(response => response.json())
         .then(json => {
             if (myChart) {
@@ -74,7 +74,7 @@ function getUserWriteCount() {
 
 
 function getProductCount() {
-    fetch('http://3.36.40.49/office/counts')
+    fetch('https://lucedude.link/office/counts')
         .then(response => response.json())
         .then(json => {
             if (myChart) {
@@ -104,7 +104,7 @@ function getProductCount() {
 }
 
 function getCategoryProductCount() {
-    fetch('http://3.36.40.49/office/category')
+    fetch('https://lucedude.link/office/category')
         .then(response => response.json())
         .then(json => {
             if (myChart) {
@@ -134,7 +134,7 @@ function getCategoryProductCount() {
 }
 
 function getTransactionStatusCount() {
-    fetch('http://3.36.40.49/office/transaction')
+    fetch('https://lucedude.link/office/transaction')
         .then(response => response.json())
         .then(json => {
             if (myChart) {
