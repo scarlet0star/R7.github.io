@@ -2,6 +2,8 @@
 <html>
 <body>
 
+
+<button onclick="getUserWriteCount()">유저별 생성 갯수</button>
 <button onclick="getProductCount()">일별 Product</button>
 <button onclick="getCategoryProductCount()">카테고리별 Product</button>
 <button onclick="getTransactionStatusCount()">거래 진행 상황</button>
@@ -13,8 +15,66 @@
 const ctx = document.getElementById('myChart').getContext('2d');
 let myChart;
 
+function getUserWriteCount() {
+    fetch('http://3.36.40.49/office/writingcounts')
+        .then(response => response.json())
+        .then(json => {
+            if (myChart) {
+                myChart.destroy();
+            }
+
+            let postCounts = [];
+            let productCounts = [];
+            let commentCounts = [];
+
+            Object.values(json).forEach(value => {
+                productCounts.push(value[0]);
+                postCounts.push(value[1]);
+                commentCounts.push(value[2]);
+            });
+
+            myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(json),
+                    datasets: [
+                        {
+                            label: 'Product Count',
+                            data: productCounts,
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Post Count',
+                            data: postCounts,
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Comment Count',
+                            data: commentCounts,
+                            backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                            borderColor: 'rgba(255, 159, 64, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+}
+
+
 function getProductCount() {
-    fetch('http://127.0.0.1:8000/office/counts')
+    fetch('http://3.36.40.49/office/counts')
         .then(response => response.json())
         .then(json => {
             if (myChart) {
@@ -44,7 +104,7 @@ function getProductCount() {
 }
 
 function getCategoryProductCount() {
-    fetch('http://127.0.0.1:8000/office/category')
+    fetch('http://3.36.40.49/office/category')
         .then(response => response.json())
         .then(json => {
             if (myChart) {
@@ -74,7 +134,7 @@ function getCategoryProductCount() {
 }
 
 function getTransactionStatusCount() {
-    fetch('http://127.0.0.1:8000/office/transaction')
+    fetch('http://3.36.40.49/office/transaction')
         .then(response => response.json())
         .then(json => {
             if (myChart) {
