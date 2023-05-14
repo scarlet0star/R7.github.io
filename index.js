@@ -19,7 +19,7 @@ async function loadProducts() {
     newProduct.style.margin = "10px";
 
     const newImage = document.createElement("img");
-    newImage.style = "width: 200px; height: 200px"; // 이미지 크기 지정
+    newImage.style = "width: 200px; height: 200px; cursor: pointer;"; // 이미지 크기 지정
     newImage.style.backgroundColor = "black";
     newImage.style.objectFit = "cover";
 
@@ -33,6 +33,7 @@ async function loadProducts() {
 
     const newTitle = document.createElement("h3");
     newTitle.textContent = product.title;
+    newTitle.style = "cursor: pointer;"
     newProduct.appendChild(newTitle);
 
     const newPrice = document.createElement("p");

@@ -103,19 +103,13 @@ window.onload = async function () {
   title.value = response.title;
   content.value = response.content;
   price.value = response.price;
-  image.files = response.image;
+  image.files = response.images[0];
+  console.log(response)
+  console.log(response.images[0])
   is_free.checked = response.is_free;
   bargain.checked = response.bargain;
   place.value = response.place;
 
-  // const formData = new FormData();
-  // formData.append('title', title);
-  // formData.append('content', content);
-  // formData.append('price', price);
-  // formData.append('is_free', is_free);
-  // formData.append('bargain', bargain);
-  // formData.append('place', place);
-  // category.forEach(category_id => formData.append('category', category_id));
 
   // for (let i = 0; i < image.length; i++) {
   //     formData.append('images', image[i]);
