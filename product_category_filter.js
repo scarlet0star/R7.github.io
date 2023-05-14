@@ -1,22 +1,15 @@
 // 상품 불러오기
-window.onload = () => {
-  const payload = localStorage.getItem("payload");
-  const payload_parse = JSON.parse(payload);
-  console.log(payload_parse.email);
-
-  const intro = document.getElementById("intro");
-  intro.innerText = payload_parse.email;
-};
-
 async function loadCategoryProducts() {
-  const response = await fetch("https://lucedude.link/product/", {
+  const urlParams = new URLSearchParams(window.location.search);
+  const categoryId = urlParams.get("category_id");
+  console.log(categoryId);
+
+  const response = await fetch(`https://lucedude.link/product/category/${categoryId}/`, {
     method: "GET",
   });
 
   response_json = await response.json();
   response_json_array = response_json.results;
-
-  console.log(response_json_array);
 
   const products = document.getElementById("products");
 
@@ -28,11 +21,11 @@ async function loadCategoryProducts() {
     newProduct.style.margin = "10px";
 
     const newImage = document.createElement("img");
-    newImage.style = "width: 200px; height: 200px"; // 이미지 크기 지정
+    newImage.style = "width: 200px; height: 200px; cursor: pointer;"; // 이미지 크기 지정
     newImage.style.backgroundColor = "black";
     newImage.style.objectFit = "cover";
 
-    if (product.images.length != 0) {
+    if (product.images && product.images.length !== 0) {
       newImage.src = product.images[0].image; // 이미지 URL 지정
       newProduct.appendChild(newImage);
     } else {
@@ -42,6 +35,7 @@ async function loadCategoryProducts() {
 
     const newTitle = document.createElement("h3");
     newTitle.textContent = product.title;
+    newTitle.style = "cursor: pointer;"
     newProduct.appendChild(newTitle);
 
     const newPrice = document.createElement("p");
@@ -52,51 +46,16 @@ async function loadCategoryProducts() {
   });
 }
 
+// 상세페이지 보기
 function productDetail(product_id) {
   window.location.href = `/product_detail.html?product_id=${product_id}`;
 }
 
 window.onload = async function () {
   await loadCategoryProducts();
-  await createCategoryOptions();
-  console.log("로딩되었습니다.");
 };
 
-fetch("./navbar.html")
-  .then((response) => {
-    return response.text();
-  })
-  .then((data) => {
-    document.querySelector("header").innerHTML = data;
-  });
-
-//카테고리 가져오기
-async function getCategoryList() {
-  const response = await fetch("https://lucedude.link/product/category/");
-  const data = await response.json();
-  console.log(data);
-  return data;
-}
-
-//카테고리 리스트
-async function createCategoryOptions() {
-  const all_category = await getCategoryList();
-
-  const categories = document.getElementById("categories");
-
-  for (let i = 0; i < all_category.length; i++) {
-    const liElement = document.createElement("li");
-    categories.appendChild(liElement);
-
-    const aElement = document.createElement("a");
-    aElement.className = "dropdown-item";
-    aElement.value = all_category[i].id;
-    aElement.href = `product/category/${all_category[i].id}/`;
-    aElement.textContent = all_category[i].name;
-    liElement.appendChild(aElement);
-  }
-}
-
+// 숫자 콤마 정규식
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
