@@ -1,7 +1,16 @@
-console.log('dfz')
+// 
+const payload = localStorage.getItem("payload")
+const payload_parse = JSON.parse(payload)
+const userId = payload_parse.user_id
+
+if (!localStorage.getItem("access")) {
+    alert('로그인이 필요합니다!')
+    window.history.back()
+}
+
 
 async function getProduct(productId) {
-    const response = await fetch(`http://127.0.0.1:8080/product/${productId}/`,
+    const response = await fetch(`http://3.36.40.49/product/${productId}/`,
     )
 
     if (response.status == 200) {
@@ -12,51 +21,9 @@ async function getProduct(productId) {
     }
 }
 
-//카테고리 가져오기
-async function getCategoryList() {
-    const response = await fetch('http://127.0.0.1:8080/product/category/');
-    const data = await response.json();
-    console.log(data)
-    return data;
-}
-
-//카테고리 리스트
-async function createCategoryOptions() {
-    const all_category = await getCategoryList();
-
-    const categories = document.getElementById('categories');
-
-    for (let i = 0; i < all_category.length; i++) {
-        const liElement = document.createElement('li')
-        categories.appendChild(liElement);
-
-        const aElement = document.createElement('a')
-        aElement.className = "dropdown-item";
-        aElement.value = all_category[i].id;
-        aElement.href = `product/category/${all_category[i].id}/`
-        aElement.textContent = all_category[i].name;
-        liElement.appendChild(aElement);
-    }
-}
-
-
-
-
-
 window.onload = async function () {
-    // 유저 확인용
-    const payload = localStorage.getItem("payload");
-    console.log(payload)
-    const payload_parse = JSON.parse(payload)
-    console.log(payload_parse.user_id)
-    userId = payload_parse.user_id
-    //
-
-
-
-
-
     createCategoryOptions()
+
     const urlParams = new URLSearchParams(window.location.search);
     const productId = urlParams.get('product_id');
     console.log(productId)
@@ -131,44 +98,46 @@ window.onload = async function () {
 
     // 수정/삭제 버튼 관련
     // 보여주고 못누르게하기
+    // if (response.user == userId) {
+    //     const productUpdateBtn = document.getElementById('product_update')
+    //     const productDeleteBtn = document.getElementById('product_delete')
+    //     productUpdateBtn.setAttribute("onclick", `productUpdate(${productId})`)
+    //     productDeleteBtn.setAttribute("onclick", `productDelete(${productId})`)
+    // } else {
+    //     const productUpdateBtn = document.getElementById('product_update')
+    //     const productDeleteBtn = document.getElementById('product_delete')
+    //     productUpdateBtn.setAttribute("onclick", "alert('권한이 없습니다')")
+    //     productDeleteBtn.setAttribute("onclick", "alert('권한이 없습니다')")
+    // }
+
+    // 내 글만 보이기
     if (response.user == userId) {
         const productUpdateBtn = document.getElementById('product_update')
         const productDeleteBtn = document.getElementById('product_delete')
+        productUpdateBtn.style.display = "block"
+        productDeleteBtn.style.display = "block"
         productUpdateBtn.setAttribute("onclick", `productUpdate(${productId})`)
         productDeleteBtn.setAttribute("onclick", `productDelete(${productId})`)
+    
     } else {
         const productUpdateBtn = document.getElementById('product_update')
         const productDeleteBtn = document.getElementById('product_delete')
-        productUpdateBtn.setAttribute("onclick", "alert('권한이 없습니다')")
-        productDeleteBtn.setAttribute("onclick", "alert('권한이 없습니다')")
+        productUpdateBtn.style.display = "none"    
+        productDeleteBtn.style.display = "none"            
     }
-
-    // 내 글만 보이기
-    // if (response.user == userId) {
-    // const productUpdateBtn = document.getElementById('product_update')
-    // const productDeleteBtn = document.getElementById('product_delete')
-    // productUpdateBtn.style.display = "block"
-    // productDeleteBtn.style.display = "block"
-    
-    // } else {
-    // const productUpdateBtn = document.getElementById('product_update')
-    // const productDeleteBtn = document.getElementById('product_delete')
-    // productUpdateBtn.style.display = "none"    
-    // productDeleteBtn.style.display = "none"            
-    // }
 
 }
 
 
-function productUpdate(product) {
-    window.location.href = `/product_update.html?product_id=${product.id}`
+function productUpdate(product_id) {
+    window.location.href = `/product_update.html?product_id=${product_id}`
 }
 
 
 async function productDelete(product_id) {
     if (confirm('삭제하시겠습니까?')) {
         let access = localStorage.getItem('access')
-        const response = await fetch(`http://127.0.0.1:8080/product/${product_id}`, {
+        const response = await fetch(`http://3.36.40.49/product/${product_id}`, {
             headers: {
                 'Authorization': `Bearer ${access}`,
             },
