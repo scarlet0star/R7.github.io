@@ -3,12 +3,6 @@ const payload = localStorage.getItem("payload")
 const payload_parse = JSON.parse(payload)
 const userId = payload_parse.user_id
 
-if (!localStorage.getItem("access")) {
-    alert('로그인이 필요합니다!')
-    window.history.back()
-}
-
-
 async function getProduct(productId) {
     const response = await fetch(`http://3.36.40.49/product/${productId}/`,
     )
@@ -22,8 +16,6 @@ async function getProduct(productId) {
 }
 
 window.onload = async function () {
-    createCategoryOptions()
-
     const urlParams = new URLSearchParams(window.location.search);
     const productId = urlParams.get('product_id');
     console.log(productId)
@@ -89,7 +81,7 @@ window.onload = async function () {
         newImage.setAttribute("src", `https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F99F519345EE1ED620D`)
         newImage.setAttribute("class", "img-fluid")
     } else {
-        newImage.setAttribute("src", `http://127.0.0.1:8080${response.images[0].image}`)
+        newImage.setAttribute("src", `http://3.36.40.49${response.images[0].image}`)
         newImage.setAttribute("style", "width:250px; height:250px;")
         newImage.style.objectFit = "cover"
     }
@@ -165,10 +157,3 @@ function categoryFilter(category_id) {
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
-
-fetch("./navbar.html").then(response => {
-    return response.text()
-})
-    .then(data => {
-        document.querySelector("header").innerHTML = data;
-    })

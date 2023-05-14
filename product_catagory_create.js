@@ -1,15 +1,11 @@
-// 
+// 관리자 체크
 const payload = localStorage.getItem("payload")
 const payload_parse = JSON.parse(payload)
-
-if (!localStorage.getItem("access")) {
-    alert('로그인이 필요합니다!')
-    window.history.back()
-} else if (payload_parse.is_admin == false) {
+if (payload_parse.is_admin == false) {
     alert('관리자만 접근 가능합니다.')
     window.history.back()
 }
-
+//
 
 //등록
 async function handleProductCategoryCreate() {
@@ -36,7 +32,7 @@ async function handleProductCategoryCreate() {
         alert('등록 완료!')
         location.reload();
     } else if (response.status == 400) {
-        alert('내용을 입력해 주세요.')
+        alert('입력내용이 없거나 이미 존재하는 카테고리입니다.')
         location.reload();
     } else if (response.status == 403) {
         alert('관리자만 접근 가능합니다.')

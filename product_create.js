@@ -1,18 +1,6 @@
-window.onload = () => {
-    console.log("로딩");
-}
-if (!localStorage.getItem("access")) {
-    alert('로그인이 필요합니다!')
-    window.history.back()
-}
-
-// 카테고리 가져오기
-async function getCategoryList() {
-    const response = await fetch('http://3.36.40.49/product/category/');
-    const data = await response.json();
-    console.log(data)
-    return data;
-}
+// window.onload = () => {
+//     console.log("로딩");
+// }
 
 //카테고리 선택 옵션
 async function createCategoryOptions() {
