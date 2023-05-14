@@ -51,13 +51,6 @@ function productDetail(product_id) {
 
 window.onload = async function () {
     await loadProducts()
-    
-    const payload = localStorage.getItem("payload");
-    const payload_parse = JSON.parse(payload)
-    console.log(`아이디: ${payload_parse.user_id}`)
-    
-    console.log('로딩되었습니다.')
-    
 }
 
 // 숫자 콤마 정규식
